@@ -34,5 +34,7 @@ tar_plan(
   demo_df = prep_demographics(demo_df_raw),
   demo_chisq_tests = calc_demo_chisq_tests(demo_df),
   within_outcome_chisq_tests = calc_outcome_timepoint_chisq_tests(outcome_df),
-  between_outcome_chisq_tests = calc_outcome_age_chisq_tests(outcome_df)
+  between_outcome_chisq_tests = calc_outcome_age_chisq_tests(outcome_df),
+  hba1c_above_goal_age_tests = calc_a1c_bin_chisq_tests(outcome_df),
+  hba1c_age_tests = calc_a1c_level_chisq_tests(outcome_df)
 )

@@ -92,12 +92,10 @@ calc_outcome_timepoint_chisq_tests <- function(outcome_df) {
 }
 
 calc_outcome_age_chisq_tests <- function(outcome_df) {
-  browser()
   results <- outcome_df %>% 
     filter(outcome %in% c('opioid_use', 'hospitalization', 'anxiety', 'depression')) %>% 
     group_by(outcome, timepoint) %>% 
     group_modify(\(df, group) {
-      browser()
       # Convert to matrix, then perform chi-square or fisher.
       mat <- df %>% 
         pivot_wider(
@@ -113,6 +111,66 @@ calc_outcome_age_chisq_tests <- function(outcome_df) {
   
   return(results)
 }
+
+calc_a1c_bin_chisq_tests <- function(outcome_df) {
+  results <- outcome_df %>% 
+    filter(outcome == 'a1c') %>% 
+    mutate(
+      'a1c_high' = event %in% c('7.0-7.9', '8.0-8.9', '>=9.0')
+    ) %>% 
+    group_by(timepoint, age, a1c_high) %>% 
+    summarize('count' = sum(count)) %>% 
+    group_by(timepoint) %>% 
+    group_modify(.f = \(df, group) {
+      mat <- df %>% 
+        pivot_wider(id_cols = age, names_from = a1c_high, values_from = count) %>% 
+        column_to_rownames('age') %>% 
+        as.matrix()
+      results <- chisq_with_fisher(mat)
+      return(results)
+    })
+  return(results)
+}
+
+calc_a1c_level_chisq_tests <- function(outcome_df) {
+  results <- outcome_df %>% 
+    filter(
+      outcome == 'a1c',
+      timepoint != 'Baseline'
+    ) %>% 
+    group_by(timepoint) %>% 
+    group_modify(.f = \(df, group) {
+      mat <- df %>% 
+        pivot_wider(id_cols = age, names_from = event, values_from = count) %>% 
+        column_to_rownames('age') %>% 
+        as.matrix()
+      results <- chisq_with_fisher(mat)
+      return(results)
+    })
+  return(results)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

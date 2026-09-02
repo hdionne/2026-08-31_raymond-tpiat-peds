@@ -8,6 +8,10 @@ load_outcome_sheet <- function(wb, sheet) {
   
   colnames(df) <- c('timepoint', 'description', 'child_yes', 'adult_yes', 'yes_calc-total', 'yes_input-total', 'child_no', 'adult_no', 'no_calc-total', 'no_input-total', 'calc-total', 'input-total')
   
+  for(x in colnames(df)[-c(1,2)]) {
+    df[,x] <- as.integer(df[,x])
+  }
+  
   return(df)
 }
 
@@ -17,7 +21,8 @@ load_outcome_df <- function(wb) {
     'opioid_use' = 'TPIAT Opioid Pop Method',
     'hospitalization' = 'TPIAT Hospitalization PM',
     'anxiety' = 'TPIAT Anxiety PM',
-    'depression' = 'TPIAT Depression PM'
+    'depression' = 'TPIAT Depression PM',
+    'encounter' = 'TPIAT Had Encounter PM'
   )
   
   dfs <- map(as.list(sheets_to_load), \(sheet) load_outcome_sheet(wb, sheet))

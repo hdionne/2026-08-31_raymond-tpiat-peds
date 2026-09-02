@@ -1,30 +1,34 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
 wb_file|stem|9556cf9d9b89e689|04f55f57f84d67be|2c530c1562a7fbd1|241703231||t20696.7874975017s|s83b|83|rds|local|vector|||0.485||
 wb|stem|a33943a760986cb5|42cd838ceee05571|6efffa84a8aa77c4|1482670663||t20697.4994306013s|s167095b|167095|rds|local|vector|||0.187||
-outcome_df_raw|stem|96f6b5cbf7cfcd7f|be6426787516d0bc|1eb7adeedd10b09c|-1003902370||t20697.6066559346s|s620b|620|rds|local|vector|||0.016||
 outcome_a1c_df_raw|stem|4bf8d8cddc561726|968f4f88fe0e15b9|6e0582c6d9757086|-138274544||t20697.6087395255s|s568b|568|rds|local|vector|||0.016|NAs introduced by coercion. NAs introduced by coercion. NAs introduced by coercion|
-outcome_df|stem|687d28f669d70425|c3f6f10a060b8380|1b8f2a4ef71885e7|1059678177||t20697.6202471263s|s642b|642|rds|local|vector|||0.031||
 demo_df_raw|stem|9df7605d358ffeba|d96323e1a128f8d4|5800808ca73b070b|-1329031172||t20697.6571919417s|s857b|857|rds|local|vector|||0.015||
 demo_df|stem|8f23cb48928e1ebf|ce58af444d5679a0|d5f8c8cf602f033c|-605641543||t20697.6597461191s|s773b|773|rds|local|vector|||0.031|NAs introduced by coercion. NAs introduced by coercion. NAs introduced by coercion|
-outcome_wilson_tests|stem|8af76f8786eca2e6|8797a113b705d67e|2a96f87d82905552|-1892432479||t20697.7315117208s|s4024b|4024|rds|local|vector|||0.156||
 demo_chisq_tests|stem|164815127cc05821|61fcc02e5b276fc5|439493718a2ae906|363131140||t20697.7492052935s|s1493b|1493|rds|local|vector|||0.063|Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect|
 .Random.seed|object|bd7565f068be7df8
 calc_wilson_test|function|5a7066e416cb0fa1
 wilson_tests|object|8d837198e2b0ad0e
+calc_between_outcome_chisq_tests|function|c469fda454d44139
 calc_between_outcome_chisq_test|function|6a14b9b882bbf403
+calc_within_outcome_chisq_tests|function|521b82353f1e48b9
 calc_chisq_tests|function|5fc2328ae52835b0
-within_outcome_chisq_tests|stem|e4a046095f43fd7c|3883d5c5a219178f|9a65580034c7fe9f|1154265897||t20697.7607578749s|s953b|953|rds|local|vector|||0.203||
+outcome_df_raw|stem|46f7f9c9fba2bc19|be6426787516d0bc|50667da4b34f0b22|-1003902370||t20697.8141322943s|s638b|638|rds|local|vector|||0.031|NAs introduced by coercion. NAs introduced by coercion. NAs introduced by coercion|
+outcome_df|stem|85bcd98bf7f14534|c3f6f10a060b8380|667dde15c9feb0fc|1059678177||t20697.8141341472s|s637b|637|rds|local|vector|||0.047||
+within_outcome_chisq_tests|stem|e4a046095f43fd7c|71977b5ff1220311|a5850ae19466b469|1154265897||t20697.8141375023s|s953b|953|rds|local|vector|||0.172||
+outcome_wilson_tests|stem|345cfdc8cef5f3cc|8797a113b705d67e|a83cb0673189a92c|-1892432479||t20697.8141398818s|s4297b|4297|rds|local|vector|||0.156||
+between_outcome_chisq_tests|stem|eee99109feb1113d|c209483b87bc35ac|fc4c832f6d58e49b|1854941676||t20697.8237395386s|s918b|918|rds|local|vector|||0.078|Chi-squared approximation may be incorrect|
 chisq_with_fisher|function|16677b71b9847bdb
 prep_demographics|function|7edb800af04b8622
-load_outcome_sheet|function|ea31c2683ea38147
+load_outcome_sheet|function|03f756ddaaa6b1cf
 libraries|object|3d56352a54cd16cd
 load_demographics|function|e4479b1a5ac3de4d
 load_outcome_a1c_sheet|function|a196e864ba98b779
 calc_wilson_tests|function|5a7066e416cb0fa1
 prep_outcome_df|function|bdf60d72f4d8d0a4
-calc_within_outcome_chisq_tests|function|521b82353f1e48b9
+calc_outcome_age_chisq_tests|function|e611d7edb140f281
+calc_outcome_timepoint_chisq_tests|function|521b82353f1e48b9
+calc_a1c_bin_chisq_tests|function|f078c3d008c9cd7a
 calc_demo_chisq_tests|function|a2297e304744d788
-calc_between_outcome_chisq_tests|function|c469fda454d44139
-load_outcome_df|function|18295c14bb109f55
+load_outcome_df|function|02d4fd6072bf7923
 load_outcome_a1c_df|function|a47d9fa007908ba2
-between_outcome_chisq_tests|stem|eee99109feb1113d|f102fa58be1c194a|e2e0f548d41537ba|1854941676||t20697.7612345688s|s918b|918|rds|local|vector|||0.125|Chi-squared approximation may be incorrect|
+hba1c_above_goal_age_tests|stem|06c842763d1b3505|fb523c8580108d0c|99128deb4d02777c|1700354927||t20697.8252868405s|s464b|464|rds|local|vector|||0.078||
