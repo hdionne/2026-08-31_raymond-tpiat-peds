@@ -30,7 +30,7 @@ calc_outcome_age_logistic_tests|function|e2d83cc40094e7e8
 prep_demographics|function|7edb800af04b8622
 calc_sensitivity|function|c0ca27706de1b3a0
 load_outcome_sheet|function|03f756ddaaa6b1cf
-calc_adversarial_outcome_comparison|function|3d90a1e01ba76916
+calc_adversarial_outcome_comparison|function|fb10f2b2d749f234
 libraries|object|3d56352a54cd16cd
 load_demographics|function|e4479b1a5ac3de4d
 load_outcome_a1c_sheet|function|a196e864ba98b779
@@ -45,4 +45,4 @@ calc_omnibus_variance_chisq_tests|function|2564da2b0d495f38
 calc_demo_chisq_tests|function|6b36f33b767ef116
 load_outcome_df|function|02d4fd6072bf7923
 load_outcome_a1c_df|function|a47d9fa007908ba2
-adversarial_outcome_comparisons|stem|9e679f4d834fadc0|a538e4123961afb1|d44d3c8b6c69ac7c|1503119888||t20700.8301343055s|s722b|722|rds|local|vector|||0.015||
+adversarial_outcome_comparisons|stem|4ae96c30a84095df|a538e4123961afb1|7bc6a06b1e22ff2d|1503119888||t20700.8354915922s|s736b|736|rds|local|vector|||0.015||
