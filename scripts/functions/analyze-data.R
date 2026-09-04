@@ -150,8 +150,17 @@ calc_a1c_level_chisq_tests <- function(outcome_df) {
   return(results)
 }
 
-
-
+calc_sensitivity <- function(outcome_df) {
+  results <- outcome_df %>% 
+    group_by(outcome, timepoint, age) %>% 
+    mutate(
+      'prop_completer' = count / sum(count),
+      'prop_itt' = count / ifelse(age == 'child', 97, 401),
+      'prop_diff' = prop_completer - prop_itt
+    )
+  
+  return(results)
+}
 
 
 
