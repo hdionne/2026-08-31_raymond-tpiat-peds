@@ -54,11 +54,15 @@ calc_demo_chisq_tests <- function(demo_df) {
     ) %>% 
     group_by(characteristic) %>% 
     group_modify(.f = \(df, group) {
-      return_df <- df %>% 
+      mat <- df %>% 
+        column_to_rownames('age') %>% 
         select(count_in, count_out) %>% 
-        as.matrix() %>% 
-        chisq_with_fisher()
-      return(return_df)
+        as.matrix()
+      estimate_or <- (mat['child', 'count_in'] / mat['child', 'count_out']) / (mat['adult', 'count_in'] / mat['adult', 'count_out'])
+      result <- mat %>% 
+        chisq_with_fisher() %>% 
+        mutate('estimate' = estimate_or)
+      return(result)
     }) %>% 
     ungroup()
   
@@ -100,7 +104,11 @@ calc_outcome_timepoint_chisq_tests <- function(outcome_df) {
             ) %>% 
             column_to_rownames('timepoint') %>% 
             as.matrix()
-          results <- chisq_with_fisher(mat)
+          
+          estimate_or <- (mat[group$timepoint, 'yes'] / mat[group$timepoint, 'no']) / (mat['Baseline', 'yes'] / mat['Baseline', 'no'])
+          
+          results <- chisq_with_fisher(mat) %>% 
+            mutate('estimate' = estimate_or)
           return(results)
         })
       
@@ -133,7 +141,12 @@ calc_outcome_age_chisq_tests <- function(outcome_df) {
         ) %>% 
         column_to_rownames('age') %>% 
         as.matrix()
-      results <- chisq_with_fisher(mat)
+      
+      estimate_or <- (mat['child', 'yes'] / mat['child', 'no']) / (mat['adult', 'yes'] / mat['adult', 'no'])
+      
+      results <- chisq_with_fisher(mat) %>% 
+        mutate('estimate' = estimate_or)
+      
       return(results)
     }) %>% 
     ungroup()
@@ -328,7 +341,11 @@ calc_adversarial_outcome_age_chisq_tests <- function(outcome_df) {
         mat['child', 'yes'] <- mat['child', 'yes'] + (97 - sum(mat['child',]))
         mat['adult', 'no'] <- mat['adult', 'no'] + (401 - sum(mat['adult',]))
       }
-      results <- chisq_with_fisher(mat)
+      
+      estimate_or <- (mat['child', 'yes'] / mat['child', 'no']) / (mat['adult', 'yes'] / mat['adult', 'no'])
+      
+      results <- chisq_with_fisher(mat) %>% 
+        mutate('estimate' = estimate_or)
       return(results)
     }) %>% 
     ungroup()
@@ -344,10 +361,20 @@ calc_adversarial_outcome_age_chisq_tests <- function(outcome_df) {
   return(results)
 }
 
-
-
-
-
+calc_adversarial_outcome_comparison <- function(chisq_tbl, adversarial_chisq_tbl) {
+  results <- left_join(
+    select(chisq_tbl, outcome, timepoint, estimate, p_adj, p_adj_signif),
+    select(adversarial_chisq_tbl, outcome, timepoint, estimate, p_adj, p_adj_signif),
+    by = join_by(outcome, timepoint)
+  ) %>% 
+    mutate(
+      'adversarial_direction' = ifelse(sign(estimate.x) == sign(estimate.y), 'same', 'different'),
+      'adversarial_significance' = ifelse(p_adj_signif.x == p_adj_signif.y, 'same', 'different'),
+      'any_adversarial_effect' = (adversarial_direction == 'different' | adversarial_significance == 'different'),
+      'adversarial_reversed' = (adversarial_direction == 'different' & p_adj_signif.x & p_adj_signif.y)
+    )
+  return(results)
+}
 
 
 

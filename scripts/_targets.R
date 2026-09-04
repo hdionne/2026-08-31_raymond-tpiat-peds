@@ -40,5 +40,6 @@ tar_plan(
   completer_sensitivity_diffs = calc_sensitivity(outcome_df),
   between_outcome_logistic_regression = calc_outcome_age_logistic_tests(outcome_df),
   omnibus_variance_chisq_tests = calc_omnibus_variance_chisq_tests(outcome_df),
-  adversarial_between_outcome_chisq_tests = calc_adversarial_outcome_age_chisq_tests(outcome_df)
+  adversarial_between_outcome_chisq_tests = calc_adversarial_outcome_age_chisq_tests(outcome_df),
+  adversarial_outcome_comparisons = calc_adversarial_outcome_comparison(between_outcome_chisq_tests, adversarial_between_outcome_chisq_tests)
 )
