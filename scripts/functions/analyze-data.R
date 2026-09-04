@@ -15,6 +15,15 @@ calc_wilson_tests <- function(outcome_df) {
         }
       }) %>% 
         bind_rows()
+    ) %>% 
+    ungroup()
+  
+  df <- df %>% 
+    mutate(
+      'p_adj' = p.adjust(p.value, method = 'BH'),
+      'p_signif' = p.value < 0.05,
+      'p_adj_signif' = p_adj < 0.05,
+      'signif_dropped' = p_signif & (!p_adj_signif)
     )
   
   return(df)
@@ -37,7 +46,7 @@ chisq_with_fisher <- function(mat) {
 }
 
 calc_demo_chisq_tests <- function(demo_df) {
-  demo_df %>% 
+  results <- demo_df %>% 
     mutate(
       'count_in' = count,
       'count_out' = age_total - count,
@@ -50,8 +59,18 @@ calc_demo_chisq_tests <- function(demo_df) {
         as.matrix() %>% 
         chisq_with_fisher()
       return(return_df)
-    })
-    
+    }) %>% 
+    ungroup()
+  
+  results <- results %>% 
+    mutate(
+      'p_adj' = p.adjust(p.value, method = 'BH'),
+      'p_signif' = p.value < 0.05,
+      'p_adj_signif' = p_adj < 0.05,
+      'signif_dropped' = p_signif & (!p_adj_signif)
+    )
+  
+  return(results)
 }
 
 calc_outcome_timepoint_chisq_tests <- function(outcome_df) {
@@ -86,7 +105,16 @@ calc_outcome_timepoint_chisq_tests <- function(outcome_df) {
         })
       
       return(results)
-    })
+    }) %>% 
+    ungroup()
+  
+  results <- results %>% 
+    mutate(
+      'p_adj' = p.adjust(p.value, method = 'BH'),
+      'p_signif' = p.value < 0.05,
+      'p_adj_signif' = p_adj < 0.05,
+      'signif_dropped' = p_signif & (!p_adj_signif)
+    )
   
   return(results)
 }
@@ -107,7 +135,16 @@ calc_outcome_age_chisq_tests <- function(outcome_df) {
         as.matrix()
       results <- chisq_with_fisher(mat)
       return(results)
-    })
+    }) %>% 
+    ungroup()
+  
+  results <- results %>% 
+    mutate(
+      'p_adj' = p.adjust(p.value, method = 'BH'),
+      'p_signif' = p.value < 0.05,
+      'p_adj_signif' = p_adj < 0.05,
+      'signif_dropped' = p_signif & (!p_adj_signif)
+    )
   
   return(results)
 }
@@ -128,7 +165,17 @@ calc_a1c_bin_chisq_tests <- function(outcome_df) {
         as.matrix()
       results <- chisq_with_fisher(mat)
       return(results)
-    })
+    }) %>% 
+    ungroup()
+  
+  results <- results %>% 
+    mutate(
+      'p_adj' = p.adjust(p.value, method = 'BH'),
+      'p_signif' = p.value < 0.05,
+      'p_adj_signif' = p_adj < 0.05,
+      'signif_dropped' = p_signif & (!p_adj_signif)
+    )
+  
   return(results)
 }
 
@@ -146,7 +193,17 @@ calc_a1c_level_chisq_tests <- function(outcome_df) {
         as.matrix()
       results <- chisq_with_fisher(mat)
       return(results)
-    })
+    }) %>% 
+    ungroup()
+  
+  results <- results %>% 
+    mutate(
+      'p_adj' = p.adjust(p.value, method = 'BH'),
+      'p_signif' = p.value < 0.05,
+      'p_adj_signif' = p_adj < 0.05,
+      'signif_dropped' = p_signif & (!p_adj_signif)
+    )
+  
   return(results)
 }
 
@@ -162,9 +219,130 @@ calc_sensitivity <- function(outcome_df) {
   return(results)
 }
 
+calc_outcome_age_logistic_tests <- function(outcome_df) {
+  results <- outcome_df %>% 
+    filter(outcome %in% c('opioid_use', 'hospitalization', 'anxiety', 'depression')) %>% 
+    group_by(outcome, age) %>% 
+    group_modify(\(df, group) {
+      
+      # Extract the baseline records, as all treated timepoints will be compared to the baseline.
+      baseline_record <- df %>% 
+        filter(timepoint == 'Baseline')
+      treatment_records <- df %>% 
+        filter(timepoint != 'Baseline')
+      
+      # For each timepoint, perform a chi-square test.
+      results <- treatment_records %>% 
+        group_by(timepoint) %>% 
+        group_modify(\(df, group) {
+          # browser()
+          # Create a data frame using the baseline record and the current record, then run a logistic regression.
+          df <- data.frame(
+            response = c(
+              rep('yes', filter(baseline_record, event == 'yes')$count),
+              rep('no', filter(baseline_record, event == 'no')$count),
+              rep('yes', filter(df, event == 'yes')$count),
+              rep('no', filter(df, event == 'no')$count)
+            ) %>% 
+              factor(levels = c('no', 'yes')) %>% 
+              as.integer() %>% 
+              {.-1},
+            timepoint = c(
+              rep('baseline', filter(baseline_record, event == 'yes')$count),
+              rep('baseline', filter(baseline_record, event == 'no')$count),
+              rep(group$timepoint, filter(df, event == 'yes')$count),
+              rep(group$timepoint, filter(df, event == 'no')$count)
+            ) %>% 
+              factor(levels = c('baseline', group$timepoint))
+          )
+          results <- tidy(glm(df, formula = response ~ timepoint, family = 'binomial'), conf.int = TRUE, exponentiate = TRUE)
+          return(results)
+        })
+      
+      return(results)
+    }) %>% 
+    ungroup()
+  
+  results <- results %>% 
+    mutate(
+      'p_adj' = p.adjust(p.value, method = 'BH'),
+      'p_signif' = p.value < 0.05,
+      'p_adj_signif' = p_adj < 0.05,
+      'signif_dropped' = p_signif & (!p_adj_signif)
+    )
+  
+  return(results)
+}
+
+calc_omnibus_variance_chisq_tests <- function(outcome_df) {
+  results <- outcome_df %>% 
+    group_by(outcome, age) %>% 
+    group_modify(\(df, group) {
+      # Convert to matrix, then perform chi-square or fisher.
+      mat <- df %>% 
+        pivot_wider(
+          id_cols = timepoint,
+          names_from = event,
+          values_from = count
+        ) %>% 
+        column_to_rownames('timepoint') %>% 
+        as.matrix()
+      results <- chisq_with_fisher(mat)
+      return(results)
+    }) %>% 
+    ungroup()
+  
+  results <- results %>% 
+    mutate(
+      'p_adj' = p.adjust(p.value, method = 'BH'),
+      'p_signif' = p.value < 0.05,
+      'p_adj_signif' = p_adj < 0.05,
+      'signif_dropped' = p_signif & (!p_adj_signif)
+    )
+  
+  return(results)
+}
 
 
-
+calc_adversarial_outcome_age_chisq_tests <- function(outcome_df) {
+  results <- outcome_df %>% 
+    filter(outcome %in% c('opioid_use', 'hospitalization', 'anxiety', 'depression')) %>% 
+    group_by(outcome, timepoint) %>% 
+    group_modify(\(df, group) {
+      # Convert to matrix, then perform chi-square or fisher.
+      # browser()
+      mat <- df %>% 
+        pivot_wider(
+          id_cols = age,
+          names_from = event,
+          values_from = count
+        ) %>% 
+        column_to_rownames('age') %>% 
+        as.matrix()
+      
+      child_greater <- (mat['child','yes'] / mat['child', 'no']) / (mat['adult','yes'] / mat['adult', 'no']) > 1
+      if (child_greater | is.na(child_greater)) {
+        mat['child', 'no'] <- mat['child', 'no'] + (97 - sum(mat['child',]))
+        mat['adult', 'yes'] <- mat['adult', 'yes'] + (401 - sum(mat['adult',]))
+      } else{
+        mat['child', 'yes'] <- mat['child', 'yes'] + (97 - sum(mat['child',]))
+        mat['adult', 'no'] <- mat['adult', 'no'] + (401 - sum(mat['adult',]))
+      }
+      results <- chisq_with_fisher(mat)
+      return(results)
+    }) %>% 
+    ungroup()
+  
+  results <- results %>% 
+    mutate(
+      'p_adj' = p.adjust(p.value, method = 'BH'),
+      'p_signif' = p.value < 0.05,
+      'p_adj_signif' = p_adj < 0.05,
+      'signif_dropped' = p_signif & (!p_adj_signif)
+    )
+  
+  return(results)
+}
 
 
 

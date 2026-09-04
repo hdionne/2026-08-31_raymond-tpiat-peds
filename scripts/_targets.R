@@ -37,5 +37,8 @@ tar_plan(
   between_outcome_chisq_tests = calc_outcome_age_chisq_tests(outcome_df),
   hba1c_above_goal_age_tests = calc_a1c_bin_chisq_tests(outcome_df),
   hba1c_age_tests = calc_a1c_level_chisq_tests(outcome_df),
-  completer_sensitivity_diffs = calc_sensitivity(outcome_df)
+  completer_sensitivity_diffs = calc_sensitivity(outcome_df),
+  between_outcome_logistic_regression = calc_outcome_age_logistic_tests(outcome_df),
+  omnibus_variance_chisq_tests = calc_omnibus_variance_chisq_tests(outcome_df),
+  adversarial_between_outcome_chisq_tests = calc_adversarial_outcome_age_chisq_tests(outcome_df)
 )
