@@ -435,6 +435,64 @@ calc_outcome_age_logistic_tests <- function(outcome_df) {
   return(results)
 }
 
+calc_outcome_age_logistic_tests <- function(outcome_df) {
+  results <- outcome_df %>% 
+    filter(
+      outcome %in% c('opioid_use', 'hospitalization', 'anxiety', 'depression'),
+      event %in% c('yes', 'no_completer')
+    ) %>% 
+    group_by(outcome) %>% 
+    group_modify(\(df, group) {
+      # browser()
+      # Create a data frame using the baseline record and the current record, then run a logistic regression.
+      
+      df_new <- df %>%  # Convert the data frame into a longer version by grouping by all the variables and creating duplicates for each count.
+        group_by(age, timepoint, event) %>% 
+        group_modify(\(df, group) {
+          df <- data.frame(row.names = seq(df$count))
+        }) %>% 
+        mutate(event = factor(event, levels = c('no_completer', 'yes')) %>% as.integer() %>% {.-1})
+      
+      # Calculate the expanded logistic regression
+      mod_full <- glm(df_new, formula = event ~ timepoint + age:timepoint, family = 'binomial')
+      # Calculate the reduced logistic regression
+      mod_reduced <- glm(df_new, formula = event ~ timepoint, family = 'binomial')
+      # Calculate the Anova.
+      mod_aov <- anova(mod_reduced, mod_full)
+      # Convert the models into results tables.
+      results_full <- tidy(mod_full, conf.int = TRUE, exponentiate = TRUE) %>%
+        filter(grepl(x = term, pattern = 'agechild$')) %>%  # Only care about the interaction terms
+        mutate(
+          'timepoint' = str_extract(term, pattern = '(?<=timepoint)[[:print:]]+(?=\\:)'),
+          'age' = str_extract(term, pattern = '(?<=age)[[:print:]]+'),
+        ) %>% 
+        select(timepoint, age,estimate, conf.low, conf.high, p.value)
+      results_aov <- tidy(mod_aov)[2,] %>% 
+        select(p.value)
+      # Merge results tables.
+      results <- bind_rows(
+        'logistic' = results_full,
+        'anova' = results_aov,
+        .id = 'test'
+      )
+      
+      return(results)
+    }) %>% 
+    ungroup()
+  
+  results <- results %>% 
+    mutate(
+      'p_adj' = p.adjust(p.value, method = 'BH'),
+      'p_signif' = p.value < 0.05,
+      'p_adj_signif' = p_adj < 0.05,
+      'signif_dropped' = p_signif & (!p_adj_signif)
+    )
+  
+  return(results)
+}
+
+
+
 calc_omnibus_variance_itt_chisq_tests <- function(outcome_df) {
   results <- outcome_df %>% 
     filter(event %in% c('yes', 'no_itt')) %>% 
@@ -650,7 +708,7 @@ grid_comparisons <- function(df, tpiat_row, tp_row, p_ltf_grid, m) {
 
 
 
-calc_adversarial_tipping_points <- function(outcome_df, between_outcome_chisq_tests) {
+calc_adversarial_tipping_point_proportions <- function(outcome_df, between_outcome_chisq_tests) {
   # Create data frame of simulations
   tmpdf <- outcome_df %>%
     filter(outcome %in% c('opioid_use', 'hospitalization', 'anxiety', 'depression')) %>% 
@@ -710,6 +768,55 @@ calc_adversarial_tipping_points <- function(outcome_df, between_outcome_chisq_te
   
   return(results)
   
+}
+
+
+calc_adj_p_values <- function(...) {
+  # This function takes a bunch of tables, defines a list of table subsets from these tables to get corrected p-values 
+  # from them, and calculates the adjusted p-values across these tables. 
+  browser()
+  # Get the names of the targets that I want to calculate p-values from. 
+  target_names <- map_chr(rlang::exprs(...), as.character)
+  targets <- setNames(list(...), target_names)
+  en_table_list <- sym(list(...))
+  
+  # This function extracts the table name and row name, adds them to the table, applies optional filtering 
+  # (or any additional function) and returns the table name, index, and p-values as a table.
+  collect_p_values <- function(tbl, .f = NULL, ...) {
+    table_name <- as.character(rlang::expr(tbl))
+    tbl <- mutate(tbl, 'i' = row_number(), 'table_name' = table_name)
+    if(exists(.f)) { # If a preprocessing function is provided, run that. Useful for filtering.
+      stopifnot('`.f` exists but is not a function' = is.function(.f))
+      tbl <- do.call(.f, c(tbl, list(...)))
+    }
+    tbl <- select(table_name, i, p.value)
+    return(tbl)
+  }
+  
+  # This is going to be a table containing four columns: a group variable, a sheet variable, a row number variable, and 
+  # a p-value variable. The full table will be constructed using a bind_rows call. Each group will be user defined, and 
+  # will probably be made up of a second bind_rows call if merging multiple tables. 
+  # Maybe in the future I can make this a list of formulas like gtsummary, so I don't need to wrap the same groups in
+  # `bind_rows`.
+  p_value_list <- bind_rows(
+    # For the `between-cohort` group, calculate adjusted p-values for all between-outcome chi-square and retention tests, 
+    # including binned a1c but excluding non-binned a1c.
+    'between-cohort' = bind_rows(
+      collect_p_values(between_outcome_chisq_tests, filter, outcome != 'a1c'), 
+      collect_p_values(between_outcome_retention_chisq_tests),
+    ),
+    'wilson-tests' = collect_p_values(outcome_wilson_tests),
+    'logistic' = collect_p_values(between_outcome_logistic_regression, filter, test == 'logistic_reg'),
+    'anova' = collect_p_values(between_outcome_logistic_regression, filter, test == 'anova'),
+    
+    .id = 'p_adjust_group'
+  )
+  
+  adjust_p_values <- function() {
+    
+  }
+  
+  adj_p_value_list <- map(.x = p_value_list, .f = adjust_p_values)
 }
 
 

@@ -13,35 +13,38 @@ compare_adversarial_outcomes|function|d6721b0191d43118
 tmpdf|object|699caa6816c57b00
 sim_data_w_shift|function|892f748df2057bf0
 adversarial_outcome_comparison|function|cca31488d53f4694
-between_outcome_retention_chisq_tests|stem|fe8068b52d159e93|b7a63e810e050957|b71b73d14a3ce9bf|618359778||t20714.8288268537s|s537b|537|rds|local|vector|||0.016|Chi-squared approximation may be incorrect|
-adversarial_between_outcome_chisq_tests|stem|3f2edf0cdc6382b2|8d0b5aa4d8ddd457|175e9a3744751be9|-134682642||t20714.8682327839s|s999b|999|rds|local|vector|||0.141|Chi-squared approximation may be incorrect|
 demo_df_raw|stem|9df7605d358ffeba|d96323e1a128f8d4|5800808ca73b070b|-1329031172||t20714.8683368358s|s857b|857|rds|local|vector|||0.016||
 demo_df|stem|8f23cb48928e1ebf|ce58af444d5679a0|d5f8c8cf602f033c|-605641543||t20714.8683384513s|s773b|773|rds|local|vector|||0.031|NAs introduced by coercion. NAs introduced by coercion. NAs introduced by coercion|
 demo_chisq_tests|stem|9b211551cdb91e8d|61fcc02e5b276fc5|5692499d22ab3bdc|363131140||t20714.868340607s|s1659b|1659|rds|local|vector|||0.094|Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect|
-hba1c_above_goal_age_tests|stem|00b37bbc1bc809d4|fb523c8580108d0c|2be503fe7b0ecb04|1700354927||t20714.8683425046s|s412b|412|rds|local|vector|||0.094||
-completer_sensitivity_diffs|stem|43ae54aa1e86cf03|3c29c68b323850fe|5e5a5a3b6494b3e2|-79902858||t20714.8683457235s|s1264b|1264|rds|local|vector|||0.031||
-omnibus_variance_itt_chisq_tests|stem|dbe864dbdc2cd632|a00b6fb502bf4137|b72e3efe652b405c|-407456967||t20714.8683473657s|s609b|609|rds|local|vector|||0.063||
-hba1c_age_tests|stem|0e17364192708184|7818bdfa71847d04|e194735b6520fbb0|813121261||t20714.8683630788s|s457b|457|rds|local|vector|||0.047|Chi-squared approximation may be incorrect|
-omnibus_variance_completer_chisq_tests|stem|a598294fa09f608a|c7bb26d9bf0d1f52|96a4c222f339781c|-2140875892||t20714.8683648194s|s749b|749|rds|local|vector|||0.063|Chi-squared approximation may be incorrect|
-outcome_wilson_tests|stem|3a96cfc74c5e0642|8797a113b705d67e|fce3fff14cc3f7e2|-1892432479||t20714.8683685979s|s3295b|3295|rds|local|vector|||0.25||
-within_outcome_chisq_tests|stem|bbae54473fdb72bd|71977b5ff1220311|cd6e7565a63630b4|1154265897||t20714.8689295788s|s1318b|1318|rds|local|vector|||0.203|Chi-squared approximation may be incorrect|
-between_outcome_logistic_regression|stem|9fe3a1b09b976644|200d81781111b05f|19c02ff9d33ccf59|-688204764||t20714.8689354591s|s1277b|1277|rds|local|vector|||0.406||
-.Random.seed|object|34fc654c58d845f4
 omnibus_variance_chisq_tests|object|39397eeff248f3ec
 calc_omnibus_variance_chisq_tests|function|2564da2b0d495f38
-between_outcome_chisq_tests|stem|182447daa6e5cf22|c209483b87bc35ac|f753f8a3208e890e|1854941676||t20714.8784522548s|s1678b|1678|rds|local|vector|||0.328|Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect|
-adversarial_tipping_point_tbl|stem|428d4c7e4807c31e|c0f60abdc92fe0da|51495a46077e44c0|542810987||t20714.8792975297s|s704b|704|rds|local|vector|||72.907||
-adversarial_outcome_comparisons|stem|19851e6dda877ed0|a538e4123961afb1|f0555099dd7ac555|1503119888||t20714.8792991592s|s1353b|1353|rds|local|vector|||0.016||
-save_excel|stem|237c6a0893808d46|118c856c887b6f10|87269fcec88fc81a|649991945||t20714.8793057962s|s234118b|234118|rds|local|vector|||0.344||
-outcome_df|stem|9dc8c534412d0388|c3f6f10a060b8380|82012f9a532f2cf2|1059678177||t20720.6108530803s|s737b|737|rds|local|vector|||0.031||
+.Random.seed|object|75c04c1ae894b2fa
+adversarial_tipping_point_tbl|object|cad7c9bbe14aa80b
+calc_adversarial_tipping_points|function|094acf63e1a317ce
+outcome_df|stem|9ba373eadb2c8ea0|c3f6f10a060b8380|911eec67ebb298d3|1059678177||t20720.7990713276s|s824b|824|rds|local|vector|||0.093||
+adversarial_between_outcome_chisq_tests|stem|3f2edf0cdc6382b2|8d0b5aa4d8ddd457|44f5ecc983e53a27|-134682642||t20720.8100230895s|s999b|999|rds|local|vector|||0.157|Chi-squared approximation may be incorrect|
+between_outcome_chisq_tests|stem|182447daa6e5cf22|c209483b87bc35ac|12d6c4219468127a|1854941676||t20720.81002886s|s1678b|1678|rds|local|vector|||0.312|Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect. Chi-squared approximation may be incorrect|
+hba1c_above_goal_age_tests|stem|00b37bbc1bc809d4|fb523c8580108d0c|f95b7e5a5f4e48e5|1700354927||t20720.810031148s|s412b|412|rds|local|vector|||0.078||
+completer_sensitivity_diffs|stem|43ae54aa1e86cf03|3c29c68b323850fe|746e3fb6377df651|-79902858||t20720.8100322887s|s1264b|1264|rds|local|vector|||0.015||
+omnibus_variance_itt_chisq_tests|stem|dbe864dbdc2cd632|a00b6fb502bf4137|eaf847b707337240|-407456967||t20720.81003387s|s609b|609|rds|local|vector|||0.063||
+within_outcome_chisq_tests|stem|bbae54473fdb72bd|71977b5ff1220311|b1d8d1bc14952b9f|1154265897||t20720.8100372718s|s1318b|1318|rds|local|vector|||0.219|Chi-squared approximation may be incorrect|
+between_outcome_retention_chisq_tests|stem|fe8068b52d159e93|b7a63e810e050957|1a2083b80a5cbb7b|618359778||t20720.8100386295s|s537b|537|rds|local|vector|||0.031|Chi-squared approximation may be incorrect|
+hba1c_age_tests|stem|0e17364192708184|7818bdfa71847d04|cedb79614f6d9265|813121261||t20720.8100401883s|s457b|457|rds|local|vector|||0.032|Chi-squared approximation may be incorrect|
+omnibus_variance_completer_chisq_tests|stem|a598294fa09f608a|c7bb26d9bf0d1f52|b0dcec28c9c8bb0a|-2140875892||t20720.8100470628s|s749b|749|rds|local|vector|||0.062|Chi-squared approximation may be incorrect|
+outcome_wilson_tests|stem|3a96cfc74c5e0642|8797a113b705d67e|15fdeab5a754c7ad|-1892432479||t20720.8100510083s|s3295b|3295|rds|local|vector|||0.281||
+between_outcome_logistic_regression|stem|6bf287ac6138187b|200d81781111b05f|5f55a2e5077d1a63|-688204764||t20720.8100624573s|s1134b|1134|rds|local|vector|||0.922||
+adversarial_tipping_point_prop_tbl|stem|428d4c7e4807c31e|fc3cf3d9f50eab56|b951809f6cf5e603|1449748413||t20720.810962124s|s704b|704|rds|local|vector|||77.656||
+adversarial_tipping_point_k_tbl|stem||18a73325a915e206|caca7deec337e8df|1515699611||t20720.8109642493s||0|rds|local|vector|||0||could not find function 'calc_adversarial_tipping_point_ks'
+adversarial_outcome_comparisons|stem|19851e6dda877ed0|a538e4123961afb1|f0555099dd7ac555|1503119888||t20720.8112518352s|s1353b|1353|rds|local|vector|||0.016||
 chisq_with_fisher|function|16677b71b9847bdb
+calc_adj_p_values|function|e9f873c4a07f670a
 simulate_ltf|function|51fdf6614b9c29b8
 calc_wilson_tests|function|420583b908b1caf3
 save_results_excel|function|63604586ca08016b
 calc_sensitivity|function|d860383d9e2a6ce3
-prep_outcome_df|function|af29ef7e747866b5
+prep_outcome_df|function|114cd2ffe125a6e2
 load_outcome_sheet|function|03f756ddaaa6b1cf
-calc_outcome_age_logistic_tests|function|8a7a28c9093e199d
+calc_outcome_age_logistic_tests|function|137d5c19cf61b8e7
 load_outcome_a1c_sheet|function|a196e864ba98b779
 libraries|object|9a216bcbff4c6173
 load_demographics|function|e4479b1a5ac3de4d
@@ -61,4 +64,5 @@ load_outcome_df|function|02d4fd6072bf7923
 load_outcome_a1c_df|function|a47d9fa007908ba2
 mean_glms|function|c5f0e65be64a7f14
 grid_comparisons|function|aa30ae75ba1ea03a
-calc_adversarial_tipping_points|function|094acf63e1a317ce
+calc_adversarial_tipping_point_proportions|function|094acf63e1a317ce
+save_excel|stem|1c8922dd78e3d607|525a56b1fa2cac21|8e5fa28e9b3fea77|649991945||t20720.8126269859s|s234115b|234115|rds|local|vector|||0.562||

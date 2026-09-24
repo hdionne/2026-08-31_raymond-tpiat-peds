@@ -21,8 +21,23 @@ prep_outcome_df <- function(outcome_df_raw, outcome_a1c_df_raw) {
     ) %>% 
     mutate(timepoint, outcome, event, age, count, .keep = 'none')
   
+  # Thomas wants the A1c data binned, so I will create a new set of outcomes which bin the a1c samples.
+  outcome_a1c_bin_df <- outcome_a1c_df %>% 
+    group_by(timepoint, outcome, age) %>% 
+    group_modify(.f = \(df, group) {
+      df_5 <- filter(df, event == '<5.7')
+      df_7 <- filter(df, event %in% c('7.0-7.9', '8.0-8.9', '>=9.0')) %>% 
+        summarize('event' = '>=7.0', count = sum(count))
+      df_9 <- filter(df, event == '>=9.0')
+      
+      df_new <- bind_rows(df_5, df_7, df_9)
+      
+      return(df_new)
+    }) %>% 
+    mutate(outcome = 'a1c_bin')
+  
   # Merge the outcome dfs
-  df <- bind_rows(outcome_df, outcome_a1c_df)
+  df <- bind_rows(outcome_df, outcome_a1c_df, outcome_a1c_bin_df)
   
   # Previous calculations are for ITT only. So the "no" events should actually be "no_itt".
   # Need to calculate the the completer values, using the individuals who had at least one event. Then I can calculate "no_completer" as the difference between

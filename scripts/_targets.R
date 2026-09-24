@@ -50,7 +50,20 @@ targets_analyze <- tar_plan(
   omnibus_variance_completer_chisq_tests = calc_omnibus_variance_completer_chisq_tests(outcome_df),
   adversarial_between_outcome_chisq_tests = calc_adversarial_outcome_age_chisq_tests(outcome_df),
   adversarial_outcome_comparisons = calc_adversarial_outcome_comparison(between_outcome_chisq_tests, adversarial_between_outcome_chisq_tests),
-  adversarial_tipping_point_tbl = calc_adversarial_tipping_points(outcome_df, between_outcome_chisq_tests),
+  adversarial_tipping_point_prop_tbl = calc_adversarial_tipping_point_proportions(outcome_df, between_outcome_chisq_tests),
+  # adversarial_tipping_point_k_tbl = calc_adversarial_tipping_point_ks(outcome_df, between_outcome_chisq_tests),
+  # adjusted_p_values = calc_adj_p_values(list(
+  #   'outcome_wilson_tests' = outcome_wilson_tests,
+  #   'demo_chisq_tests' = demo_chisq_tests,
+  #   'within_outcome_chisq_tests' = within_outcome_chisq_tests,
+  #   'between_outcome_retention_chisq_tests' = between_outcome_retention_chisq_tests,
+  #   'hba1c_above_goal_age_tests' = hba1c_above_goal_age_tests,
+  #   'hba1c_age_tests' = hba1c_age_tests,
+  #   'between_outcome_logistic_regression' = between_outcome_logistic_regression,
+  #   'omnibus_variance_itt_chisq_tests' = omnibus_variance_itt_chisq_tests,
+  #   'omnibus_variance_completer_chisq_tests' = omnibus_variance_completer_chisq_tests,
+  #   'adversarial_between_outcome_chisq_tests' = adversarial_between_outcome_chisq_tests,
+  # ))
 )
 
 targets_report <- tar_plan(
@@ -58,7 +71,7 @@ targets_report <- tar_plan(
   save_excel = save_results_excel(
     './results/tpiat-child-adult.xlsx',
     list(
-      'Outcome Wilson Tests' = outcome_wilson_tests, 
+      'Outcome Wilson Tests' = outcome_wilson_tests,
       'Demographic Chisq Tests' = demo_chisq_tests,
       'Within Outcome Chisq Tests' = within_outcome_chisq_tests,
       'Between Outcome Chisq Tests' = between_outcome_chisq_tests,
@@ -67,11 +80,11 @@ targets_report <- tar_plan(
       'HBA1C age tests' = hba1c_age_tests,
       'Completer Sensitivity Diffs' = completer_sensitivity_diffs,
       'Between Outcome Logistic Reg' = between_outcome_logistic_regression,
-      'Omni Var ITT Chisq Tests' = omnibus_variance_itt_chisq_tests,
-      'Omni Var Completer Chisq Tests' = omnibus_variance_completer_chisq_tests,
+      'Omni Chisq ITT Chisq Tests' = omnibus_variance_itt_chisq_tests,
+      'Omni Chisq Comp Chisq Tests' = omnibus_variance_completer_chisq_tests,
       'Advers Btwn Outcome Chisq Tests' = adversarial_between_outcome_chisq_tests,
       'Advers Outcome Comparisons' = adversarial_outcome_comparisons,
-      'Advers Tipping Point' = adversarial_tipping_point_tbl
+      'Advers Prop Tipping Point' = adversarial_tipping_point_prop_tbl
     )
   )
   # save_paper_tables_excel = save_results_excel(
