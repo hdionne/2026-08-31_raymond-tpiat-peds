@@ -36,7 +36,6 @@ demo_chisq_tests|stem|6d66edea4955e370|61fcc02e5b276fc5|71fbb66cb9878441|3631311
 adversarial_tipping_point_k_tbl|stem|45d883829c790fd2|171a2cfe4499aa3f|bfe1d268d28b8fe1|1515699611||t20733.8395792655s|s522b|522|rds|local|vector|||1.735||
 adversarial_tipping_point_prop_tbl|stem|c63fbe80fe57a7ff|f5ab056187210437|ae31d5487ccd8c88|1449748413||t20733.8411473641s|s497b|497|rds|local|vector|||135.406||
 adversarial_outcome_comparisons|stem|4ba1964d4e8e76b3|a538e4123961afb1|6e6570e425838aae|1503119888||t20733.8411486213s|s1046b|1046|rds|local|vector|||0||
-adjusted_p_values|stem|643ec377a61ea389|d80411cfa5316740|a614bb261660940f|-1530822262||t20733.8411512337s|s4556b|4556|rds|local|vector|||0.078||
 demo_chisq_tests_p_adj|stem|3dcd9108c288cda1|e1c41137db0b7137|feb51156b59738e8|779598426||t20733.8411520286s|s1846b|1846|rds|local|vector|||0||
 between_outcome_chisq_tests_p_adj|stem|8ea5cf70294a4dec|1dfb7da3b3e987c2|7ea79c86d3a85060|906254036||t20733.8411530604s|s1652b|1652|rds|local|vector|||0.016||
 tbl1|stem|84c755b26a15f50f|09960534b9016059|6dc4a7bc35136ad1|-998129877||t20733.841153974s|s900b|900|rds|local|vector|||0||
@@ -52,10 +51,11 @@ omnibus_variance_itt_chisq_tests|stem|4ea8a5f410cf5aa7|a00b6fb502bf4137|ba00ab1c
 outcome_wilson_tests|stem|bfa436eb8722c6e3|8797a113b705d67e|0b2421760315aba5|-1892432479||t20734.7701430843s|s2651b|2651|rds|local|vector|||0.234||
 within_outcome_chisq_tests|stem|de1f13c919752bbb|71977b5ff1220311|8c74dbe3ac625502|1154265897||t20734.7701468769s|s1083b|1083|rds|local|vector|||0.187|Chi-squared approximation may be incorrect|
 a1c_summary_tbl|object|ca1be44260ddd31d
-.Random.seed|object|463de21d85dad122
 a1c_bin_tbl|object|0981f66b9e7b1c2d
-make_tbl2|function|18e227f7254bf446
-tbl2|stem|3663d708d295bd4c|976fa5f3705d0847|fdcc5809f4b930f6|239196163||t20734.7231391827s||986|rds|local|vector|||0.031||object 'outcome' not found
+tbl2|stem|dac67b2d3db85ead|976fa5f3705d0847|2ec12ac8e0e2e0cb|239196163||t20735.6536938356s|s1240b|1240|rds|local|vector|||0.016||
+.Random.seed|object|ad8f58da8d9be8f5
+test|object|c386c7b04396aaec
+adjusted_p_values|stem|643ec377a61ea389|d80411cfa5316740|a614bb261660940f|-1530822262||t20735.6576709912s|s4556b|4556|rds|local|vector|||0.047||
 chisq_with_fisher|function|16677b71b9847bdb
 prep_demographics|function|7edb800af04b8622
 load_outcome_a1c_sheet|function|a196e864ba98b779
@@ -63,7 +63,7 @@ num_fmt|function|9c8d6074d74e68a4
 add_adjusted_p|function|e3da35d4fd8c6b4f
 simulate_ltf|function|51fdf6614b9c29b8
 make_tbl1|function|48c83361dc4233d0
-make_tbl3|function|43537d9d720ceaec
+make_tbl3|function|71774fe716e61f4a
 simulate_ltf_k|function|97077e1c01d2ac7b
 calc_wilson_tests|function|bb44c72ef5fd6384
 calc_sensitivity|function|d860383d9e2a6ce3
@@ -86,6 +86,7 @@ calc_a1c_bin_chisq_tests|function|8fd46113bf2ecc4f
 calc_outcome_timepoint_chisq_tests|function|2e914195d48abca7
 calc_outcome_age_retention_chisq_tests|function|d14f72d01f15855b
 load_outcome_a1c_df|function|a47d9fa007908ba2
+make_tbl2|function|326306ee93dcb0ad
 glm_comparison|function|65ca58e20edfce61
 glm_comparison_k|function|d911d951c7afe979
 load_outcome_df|function|02d4fd6072bf7923
@@ -94,4 +95,4 @@ seq_comparisons_k|function|ee6c7442c7bd179b
 grid_comparisons|function|aa30ae75ba1ea03a
 calc_adversarial_tipping_point_ks|function|d08d13d0609986c5
 calc_adversarial_tipping_point_proportions|function|def53932da05c1f7
-tbl3|stem|b47f88129dbc807d|447abce4eb77ee8f|fb76cc764d70c914|1158458226||t20735.592410048s|s511b|511|rds|local|vector|||0.047||
+tbl3|stem|b47f88129dbc807d|447abce4eb77ee8f|20035155f2afe6ab|1158458226||t20735.6675610491s|s511b|511|rds|local|vector|||0.047||
