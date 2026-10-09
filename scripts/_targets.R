@@ -57,47 +57,52 @@ targets_analyze <- tar_plan(
     demo_chisq_tests, within_outcome_chisq_tests,
     between_outcome_retention_chisq_tests, hba1c_above_goal_age_tests, hba1c_age_tests,
     between_outcome_logistic_regression, omnibus_variance_itt_chisq_tests, omnibus_variance_completer_chisq_tests,
-    adversarial_between_outcome_chisq_tests, between_outcome_chisq_tests
+    adversarial_between_outcome_chisq_tests, between_outcome_chisq_tests, outcome_wilson_tests
   )
 )
 
 # Occurs at the end, allowing computing adjusted p-values from multiple tables.
 targets_adjust_p <- tar_plan(
-  demo_chisq_tests_p_adj = add_adjusted_p(demo_chisq_tests, adjusted_p_values), 
+  outcome_wilson_tests_p_adj = add_adjusted_p(outcome_wilson_tests, adjusted_p_values),
+  demo_chisq_tests_p_adj = add_adjusted_p(demo_chisq_tests, adjusted_p_values),
   within_outcome_chisq_tests_p_adj = add_adjusted_p(within_outcome_chisq_tests, adjusted_p_values),
-  between_outcome_retention_chisq_tests_p_adj = add_adjusted_p(between_outcome_retention_chisq_tests, adjusted_p_values), 
-  hba1c_above_goal_age_tests_p_adj = add_adjusted_p(hba1c_above_goal_age_tests, adjusted_p_values), 
+  between_outcome_retention_chisq_tests_p_adj = add_adjusted_p(between_outcome_retention_chisq_tests, adjusted_p_values),
+  hba1c_above_goal_age_tests_p_adj = add_adjusted_p(hba1c_above_goal_age_tests, adjusted_p_values),
   hba1c_age_tests_p_adj = add_adjusted_p(hba1c_age_tests, adjusted_p_values),
-  between_outcome_logistic_regression_p_adj = add_adjusted_p(between_outcome_logistic_regression, adjusted_p_values), 
-  omnibus_variance_itt_chisq_tests_p_adj = add_adjusted_p(omnibus_variance_itt_chisq_tests, adjusted_p_values), 
+  between_outcome_logistic_regression_p_adj = add_adjusted_p(between_outcome_logistic_regression, adjusted_p_values),
+  omnibus_variance_itt_chisq_tests_p_adj = add_adjusted_p(omnibus_variance_itt_chisq_tests, adjusted_p_values),
   omnibus_variance_completer_chisq_tests_p_adj = add_adjusted_p(omnibus_variance_completer_chisq_tests, adjusted_p_values),
-  adversarial_between_outcome_chisq_tests_p_adj = add_adjusted_p(adversarial_between_outcome_chisq_tests, adjusted_p_values), 
-  between_outcome_chisq_tests_p_adj = add_adjusted_p(between_outcome_chisq_tests, adjusted_p_values)
+  adversarial_between_outcome_chisq_tests_p_adj = add_adjusted_p(adversarial_between_outcome_chisq_tests, adjusted_p_values),
+  between_outcome_chisq_tests_p_adj = add_adjusted_p(between_outcome_chisq_tests, adjusted_p_values),
 )
 
 targets_report <- tar_plan(
   
-  save_excel = save_results_excel(
-    './results/tpiat-child-adult.xlsx',
-    list(
-      'Outcome Wilson Tests' = outcome_wilson_tests,
-      'Outcome Retention Rates' = outcome_retention_rates,
-      'Demographic Chisq Tests' = demo_chisq_tests_p_adj,
-      'Within Outcome Chisq Tests' = within_outcome_chisq_tests_p_adj,
-      'Between Outcome Chisq Tests' = between_outcome_chisq_tests_p_adj,
-      'Between Outcome Logistic Reg' = between_outcome_logistic_regression_p_adj,
-      'Between Outcome Ret Chisq Tests' = between_outcome_retention_chisq_tests_p_adj,
-      'HBA1C above goal age tests' = hba1c_above_goal_age_tests_p_adj,
-      'HBA1C age tests' = hba1c_age_tests_p_adj,
-      'Completer Sensitivity Diffs' = completer_sensitivity_diffs,
-      'Omni Chisq ITT Chisq Tests' = omnibus_variance_itt_chisq_tests_p_adj,
-      'Omni Chisq Comp Chisq Tests' = omnibus_variance_completer_chisq_tests_p_adj,
-      'Advers Btwn Outcome Chisq Tests' = adversarial_between_outcome_chisq_tests_p_adj,
-      'Advers Outcome Comparisons' = adversarial_outcome_comparisons,
-      'Advers Prop Tipping Point' = adversarial_tipping_point_prop_tbl,
-      'Advers K Tipping Point' = adversarial_tipping_point_k_tbl
-    )
-  )
+  # Convert outputs into pretty tables.
+  tbl1 = make_tbl1(demo_chisq_tests_p_adj),
+  tbl2 = make_tbl2(outcome_wilson_tests_p_adj, within_outcome_chisq_tests_p_adj, between_outcome_chisq_tests_p_adj)
+  
+  # save_excel = save_results_excel(
+  #   './results/tpiat-child-adult.xlsx',
+  #   list(
+  #     'Outcome Wilson Tests' = outcome_wilson_tests,
+  #     'Outcome Retention Rates' = outcome_retention_rates,
+  #     'Demographic Chisq Tests' = demo_chisq_tests_p_adj,
+  #     'Within Outcome Chisq Tests' = within_outcome_chisq_tests_p_adj,
+  #     'Between Outcome Chisq Tests' = between_outcome_chisq_tests_p_adj,
+  #     'Between Outcome Logistic Reg' = between_outcome_logistic_regression_p_adj,
+  #     'Between Outcome Ret Chisq Tests' = between_outcome_retention_chisq_tests_p_adj,
+  #     'HBA1C above goal age tests' = hba1c_above_goal_age_tests_p_adj,
+  #     'HBA1C age tests' = hba1c_age_tests_p_adj,
+  #     'Completer Sensitivity Diffs' = completer_sensitivity_diffs,
+  #     'Omni Chisq ITT Chisq Tests' = omnibus_variance_itt_chisq_tests_p_adj,
+  #     'Omni Chisq Comp Chisq Tests' = omnibus_variance_completer_chisq_tests_p_adj,
+  #     'Advers Btwn Outcome Chisq Tests' = adversarial_between_outcome_chisq_tests_p_adj,
+  #     'Advers Outcome Comparisons' = adversarial_outcome_comparisons,
+  #     'Advers Prop Tipping Point' = adversarial_tipping_point_prop_tbl,
+  #     'Advers K Tipping Point' = adversarial_tipping_point_k_tbl
+  #   )
+  # )
   # save_paper_tables_excel = save_results_excel(
   #   './results/paper_tpiat-child-adult.xlsx',
   #   list(

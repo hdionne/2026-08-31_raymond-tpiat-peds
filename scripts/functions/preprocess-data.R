@@ -20,7 +20,6 @@ prep_outcome_df <- function(outcome_df_raw, outcome_a1c_df_raw) {
       names_pattern='(^[[:print:]]+(?=_))'
     ) %>% 
     mutate(timepoint, outcome, event, age, count, .keep = 'none')
-  
   # Thomas wants the A1c data binned, so I will create a new set of outcomes which bin the a1c samples.
   outcome_a1c_bin_df <- outcome_a1c_df %>% 
     group_by(timepoint, outcome, age) %>% 
@@ -39,7 +38,7 @@ prep_outcome_df <- function(outcome_df_raw, outcome_a1c_df_raw) {
   # Merge the outcome dfs
   df <- bind_rows(outcome_df, outcome_a1c_df, outcome_a1c_bin_df)
   
-  # Previous calculations are for ITT only. So the "no" events should actually be "no_itt".
+  # Previous calculations are for manual calculations only. So the "no" events should actually be "no_calc".
   # Need to calculate the the completer values, using the individuals who had at least one event. Then I can calculate "no_completer" as the difference between
   # each event yes, and the "had encounter" event yes.
   yes_df <- df %>% 
@@ -69,10 +68,19 @@ prep_outcome_df <- function(outcome_df_raw, outcome_a1c_df_raw) {
       .keep = 'unused'
     )
   
+  no_itt_df <- df %>% 
+    filter(event == 'yes') %>% 
+    mutate(
+      event = 'no_itt',
+      # Pin ITT total to 97 for child, 401 for adult, and use that for calculating number of itt nos.
+      count = ifelse(age == 'child', 97, 401) - count
+    )
+  
   # Add the "no_completer" values to the final table, and rename the current "no" to "no_itt".
   df2 <- df %>% 
-    mutate(event = ifelse(event == 'no', 'no_itt', event)) %>% 
-    rbind(no_completer_df)
+    mutate(event = ifelse(event == 'no', 'no_calc', event)) %>% 
+    rbind(no_completer_df) %>% 
+    rbind(no_itt_df)
   
   return(df2)
 }

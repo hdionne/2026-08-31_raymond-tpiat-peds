@@ -1,7 +1,7 @@
 calc_wilson_tests <- function(outcome_df) {
   # Calculate itt yes proportion.
   df_itt <- outcome_df %>%
-    filter(!(event %in% c('yes_completer'))) %>% 
+    filter(event %in% c('yes', 'no_itt')) %>% 
     group_by(outcome, timepoint, age) %>% 
     mutate(
       'calc_total' = sum(count),
@@ -84,7 +84,7 @@ calc_demo_chisq_tests <- function(demo_df) {
       estimate_or <- (mat['child', 'count_in'] / mat['child', 'count_out']) / (mat['adult', 'count_in'] / mat['adult', 'count_out'])
       result <- mat %>% 
         chisq_with_fisher() %>% 
-        mutate('estimate' = estimate_or)
+        mutate('estimate_or' = estimate_or)
       return(result)
     }) %>% 
     ungroup()
@@ -160,7 +160,7 @@ calc_outcome_age_chisq_tests <- function(outcome_df) {
       estimate_or <- (mat['child', 'yes'] / mat['child', 'no_completer']) / (mat['adult', 'yes'] / mat['adult', 'no_completer'])
       
       results <- chisq_with_fisher(mat) %>% 
-        mutate('estimate' = estimate_or)
+        mutate('estimate_or' = estimate_or)
       
       return(results)
     }) %>% 
@@ -206,7 +206,7 @@ calc_outcome_age_chisq_tests <- function(outcome_df) {
           estimate_or <- (mat['child', 1] / mat['child', 2]) / (mat['adult', 1] / mat['adult', 2])
           
           results <- chisq_with_fisher(mat) %>% 
-            mutate('estimate' = estimate_or)
+            mutate('estimate_or' = estimate_or)
           
           return(results)
           
@@ -265,14 +265,17 @@ calc_outcome_age_retention_chisq_tests <- function(outcome_df) {
       outcome =='encounter',
       event %in% c('yes', 'no_itt')
     ) %>% 
+    mutate(event = factor(event, c('yes', 'no_itt'))) %>% 
     group_by(outcome, timepoint) %>% 
     group_modify(\(df, group) {
       # Convert to matrix, then perform chi-square or fisher.
       mat <- df %>% 
         pivot_wider(
           id_cols = age,
+          names_expand = TRUE,
           names_from = event,
-          values_from = count
+          values_from = count,
+          values_fill = 0
         ) %>% 
         column_to_rownames('age') %>% 
         as.matrix()
@@ -919,6 +922,7 @@ calc_adj_p_values <- function(...) {
       collect_p_values(between_outcome_retention_chisq_tests)
     ),
     'within-cohort' = bind_rows(
+      collect_p_values(outcome_wilson_tests),
       collect_p_values(within_outcome_chisq_tests),
       collect_p_values(hba1c_age_tests)
     ),
@@ -962,19 +966,6 @@ add_adjusted_p <- function(data, p_adj_df) {
   left_join(data, p_adj_df, join_by(i, p.value))
   
 }
-
-
-save_results_excel <- function(x, results) {
-  
-  wb <- wb_workbook()
-  for(sheet in names(results)) {
-    wb$add_worksheet(sheet = sheet)
-    wb$add_data_table(sheet = sheet, x = results[[sheet]])
-  }
-  
-  wb_save(wb, file = x)
-}
-
 
 
 
