@@ -10,7 +10,7 @@ make_tbl1 <- function(demo_chisq_tests_p_adj) {
     )
 }
 
-make_tbl2 <- function(outcome_wilson_tests_p_adj, within_outcome_chisq_tests_p_adj, between_outcome_chisq_tests_p_adj) {
+make_tbl3 <- function(outcome_df, hba1c_age_tests_p_adj, hba1c_above_goal_age_tests_p_adj) {
   
   # Counts of each a1c_bin event (one column per event), plus total encounters per timepoint/age.
   a1c_bin_tbl <- outcome_df %>%

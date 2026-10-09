@@ -80,7 +80,7 @@ targets_report <- tar_plan(
   
   # Convert outputs into pretty tables.
   tbl1 = make_tbl1(demo_chisq_tests_p_adj),
-  tbl2 = make_tbl2(outcome_wilson_tests_p_adj, within_outcome_chisq_tests_p_adj, between_outcome_chisq_tests_p_adj)
+  tbl3 = make_tbl3(outcome_df, hba1c_age_tests_p_adj, hba1c_above_goal_age_tests_p_adj)
   
   # save_excel = save_results_excel(
   #   './results/tpiat-child-adult.xlsx',
